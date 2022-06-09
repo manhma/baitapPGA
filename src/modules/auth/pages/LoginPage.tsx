@@ -13,7 +13,6 @@ import { ACCESS_TOKEN_KEY } from '../../../utils/constants';
 export default function LoginPage() {
   let history = useHistory();
   const auth = useSelector((state: any) => state.auth);
-  console.log(auth);
 
   const dispath = useDispatch<AppDispatch>();
   const onLogin = (values: ILoginParams) => {
@@ -23,9 +22,9 @@ export default function LoginPage() {
   useEffect(() => {
     if (auth.data.token) {
       Cookies.set(ACCESS_TOKEN_KEY, auth.data.token, { expires: auth.rememberMe ? 7 : undefined });
-      history.push(ROUTES.home);
+      history.replace(ROUTES.home);
     }
-  }, [auth.data.token]);
+  }, [auth.data]);
 
   return (
     <div

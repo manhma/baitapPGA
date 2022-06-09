@@ -27,21 +27,17 @@ export const setUserInfo = createAsyncThunk('auth/userInfo', async (data: ILogin
   return { ...json, rememberMe: data.rememberMe };
 });
 
-// export const setUserInfoNotLogin = createAsyncThunk('auth/userInfo', async (contentType:any) => {
-//   const res = await fetch('http://api.training.div3.pgtest.co/api/v1/user', {
-//     method: 'POST',
-//     headers:
-//       contentType !== 'multipart/form-data'
-//         ? {
-//             'Content-Type': contentType || 'application/json',
-//             Authorization: Cookies.get(ACCESS_TOKEN_KEY) || '',
-//           }
-//         : {},
-//     cache: 'no-store',
-//   });
-//   const json = await res.json();
-//   return json;
-// });
+export const setUserInfoNotLogin = createAsyncThunk('auth/userInfoNotLogin', async () => {
+  const res = await fetch('http://api.training.div3.pgtest.co/api/v1/user', {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: Cookies.get(ACCESS_TOKEN_KEY) || '',
+    },
+    cache: 'no-store',
+  });
+  const json = await res.json();
+  return json;
+});
 
 const initialState = {
   isLoading: false,
@@ -83,29 +79,24 @@ export const authSlice = createSlice({
 
     ///setUserInfoNotLogin
 
-    // // Bắt đầu thực hiện action login (Promise pending)
-    // builder.addCase(setUserInfoNotLogin.pending, (state) => {
-    //   // Bật trạng thái loading
-    // });
+    builder.addCase(setUserInfoNotLogin.pending, (state) => {
+      // Bật trạng thái loading
+    });
 
-    // // Khi thực hiện action login thành công (Promise fulfilled)
-    // builder.addCase(setUserInfoNotLogin.fulfilled, (state, action) => {
-    //   // Tắt trạng thái loading, lưu thông tin user vào store
-    //   if (action.payload?.code === RESPONSE_STATUS_SUCCESS) {
-    //     console.log('action.payload: ', action.payload);
-    //     // state.data = action;
-    //   }
-    // });
+    builder.addCase(setUserInfoNotLogin.fulfilled, (state, action) => {
+      if (action.payload?.code === RESPONSE_STATUS_SUCCESS) {
+        const accessToken = Cookies.get(ACCESS_TOKEN_KEY);
+        state.data = { ...action.payload.data, token: accessToken };
+        // state.data = action;
+      }
+    });
 
-    // // Khi thực hiện action login thất bại (Promise rejected)
-    // builder.addCase(setUserInfoNotLogin.rejected, (state, action) => {
-    //   // Tắt trạng thái loading, lưu thông báo lỗi vào store
-    //   state.errorMessage = 'Thatbai';
-    // });
+    builder.addCase(setUserInfoNotLogin.rejected, (state, action) => {
+      state.errorMessage = 'Thatbai';
+    });
   },
 });
 
-// Action creators are generated for each case reducer function
 export const {} = authSlice.actions;
 
 export default authSlice.reducer;
