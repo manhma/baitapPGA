@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import Cookies from 'js-cookie';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
+import { Routes } from './Routes';
+import { ACCESS_TOKEN_KEY } from './utils/constants';
 
 function App() {
+  // const dispath = useDispatch();
+  // const auth = useSelector((state: any) => state.auth);
+  // console.log('auth: ', auth);
+  // const getProfile = React.useCallback(async () => {
+  //   const accessToken = Cookies.get(ACCESS_TOKEN_KEY);
+  //   if (accessToken && !auth.data) {
+  //     dispath(setUserInfoNotLogin(''));
+  //     // const json = await dispatch(fetchThunk(API_PATHS.userProfile));
+  //     // if (json?.code === RESPONSE_STATUS_SUCCESS) {
+  //     //   dispatch(setUserInfo({ ...json.data, token: accessToken }));
+  //     //   dispatch(replace(ROUTES.home));
+  //     // }
+  //   }
+  // }, [auth.data]);
+
+  // useEffect(() => {
+  //   getProfile();
+  // }, [getProfile]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes />
+    </>
   );
 }
 
