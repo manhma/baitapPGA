@@ -16,26 +16,15 @@ import { fetchThunk } from '../../common/redux/thunk';
 
 // First, create the thunk
 export const setUserInfo = createAsyncThunk('auth/userInfo', async (data: ILoginParams) => {
-  const res = await fetch('http://api.training.div3.pgtest.co/api/v1/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email: data.email, password: data.password }),
+  const json = await fetchThunk('http://api.training.div3.pgtest.co/api/v1/auth/login', 'post', {
+    email: data.email,
+    password: data.password,
   });
-  const json = await res.json();
   return { ...json, rememberMe: data.rememberMe };
 });
 
 export const setUserInfoNotLogin = createAsyncThunk('auth/userInfoNotLogin', async () => {
-  const res = await fetch('http://api.training.div3.pgtest.co/api/v1/user', {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: Cookies.get(ACCESS_TOKEN_KEY) || '',
-    },
-    cache: 'no-store',
-  });
-  const json = await res.json();
+  const json = await fetchThunk('http://api.training.div3.pgtest.co/api/v1/user');
   return json;
 });
 

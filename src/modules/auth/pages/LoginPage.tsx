@@ -40,6 +40,7 @@ export default function LoginPage() {
       <img src={logo} alt="" style={{ maxWidth: '250px', margin: '32px' }} />
 
       <LoginForm onLogin={onLogin} isLoading={auth.isLoading} errorMessage={auth.errorMessage} />
+      <a href="/sign-up">Đăng kí ngay</a>
     </div>
   );
 }
